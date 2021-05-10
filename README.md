@@ -6,19 +6,37 @@ This is a twitch bot which can auto moderate multiple channels
 
 #### Counter
 
+eg:
+
+- `!deaths`
+
+  - Ask the count (anyone)
+  - Response example “Demon has died (count) times... Type F in chat to pay respects”
+
+- `!deathadd`
+
+  - Add to the count (VIPs+Mods)
+  - Response example “Welp Demon died... again, new total is (count) “
+
+- `!deathreset`
+  - Reset the count (VIPs+Mods)
+  - Response example “ $(user) has brought Demon back from the dead, Goodluck this time bud “
+
+**(Option to change it per channel for example if they don’t want a death command being able to change it too a burp or something**
+
 - Ask the count (anyone)
 
 - Add to the count (VIPs+Mods)
 
 - Reset the count (VIPs+Mods)
 
-~~needs explaining~~
-
 #### Lurk
 
 - Work off of !lurk and lurk, lurking (maybe able to change to add more or a different response per channel)
 
-~~needs explaining~~
+`!lurk` or `(RegEx “lurk” or “lurking”)`
+
+- Response example “Don’t be like Grandpa Demon and get some rest Zzz! Don’t forget to mute the tab not the stream to still earn points!”
 
 #### Game
 
