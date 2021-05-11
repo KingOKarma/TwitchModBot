@@ -55,7 +55,7 @@ eg:
 
 ##### Timeouts (120seconds)
 
-- Anyone who posts a link without being permitted (exclude VIPs + Mods )
+- Anyone who posts a link without being permitted (exclude VIPs + Mods ) ✅
 - Blacklisted words (editable) for now we can just put incel, simp, virgin
 
 #### Ban
