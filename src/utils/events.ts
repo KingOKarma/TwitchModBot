@@ -67,9 +67,12 @@ export async function intiChatClient(): Promise<void> {
         const cmd = args.shift()?.toLowerCase();
 
         const bannedWords = ["simp", "incel", "virgin"];
-        const msgSplit = message.toLowerCase().split(/ +/g);
+        const isUsingBadWord = bannedWords.some((bannedWord) => {
+            const badword = new RegExp(bannedWord, "g");
+            return badword.exec(message);
+        });
 
-        if (msgSplit.some((spltmsg) => bannedWords.includes(spltmsg)) && !userMod) {
+        if (isUsingBadWord && !userMod) {
             chatClient.timeout(channel, user, 120, "Saying slurs").catch(console.error);
             return chatClient.say(channel, `${displayName} Please do not say slurs!`).catch(console.error);
         }
