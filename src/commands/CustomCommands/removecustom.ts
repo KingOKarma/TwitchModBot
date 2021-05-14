@@ -18,16 +18,16 @@ exports.run = async (chatClient: ChatClient,
 
     const ccName = args.shift();
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (ccName === undefined) {
         return chatClient.say(channel, "Please provide a command name from the list to remove from. "
         + "EG: \"!removecustom hello\" (!addcustom <ccName>)");
     }
+    const broadcaster = channel.slice(1);
 
-    const userExists = STORAGE.customCommand.some((command) => command.channelName === user);
+    const userExists = STORAGE.customCommand.some((command) => command.channelName === broadcaster);
 
     if (userExists) {
-        const userIndex = STORAGE.customCommand.findIndex((command) => command.channelName === user);
+        const userIndex = STORAGE.customCommand.findIndex((command) => command.channelName === broadcaster);
         const userCommands = STORAGE.customCommand[userIndex];
         const commandExists = userCommands.commands.some((command) => command.commandName === ccName);
 

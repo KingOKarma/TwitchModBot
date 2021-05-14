@@ -16,7 +16,8 @@ export const commandList = [
         "deletecustom",
         "customdelete",
         "ccdelete",
-        "deletecc"], group: "CustomCommands", name: "removecustom" }
+        "deletecc"], group: "CustomCommands", name: "removecustom" },
+    { aliases: ["listcc", "cclist", "customlist"], group: "CustomCommands", name: "listcustom" }
 
 
 ];

@@ -80,13 +80,31 @@ export async function intiChatClient(): Promise<void> {
         if (cmd === undefined) {
             return;
         }
+        const commandIndex = STORAGE.customCommand.findIndex((command) => command.channelName === channel.slice(1));
+        const command = STORAGE.customCommand[commandIndex];
+
+        if (!message.startsWith(CONFIG.prefix)) {
+            command.commands.forEach((ccName) => {
+                if (message === ccName.commandName) {
+                    return chatClient.say(channel, ccName.response);
+                }
+
+            });
+
+        } else {
+            command.commands.forEach((ccName) => {
+                if (cmd === ccName.commandName) {
+                    return chatClient.say(channel, ccName.response);
+                }
+
+            });
+        }
 
         const cmdIndex = commandList.findIndex((n) => {
             if (n.aliases === undefined) {
                 return n.name === cmd;
             }
             return n.name === cmd || n.aliases.includes(cmd);
-
 
         });
 
