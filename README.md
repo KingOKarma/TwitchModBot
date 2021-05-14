@@ -69,6 +69,6 @@ A command or ability to join a channel and store commands for that specific chan
 
 #### Custom commands/per channel
 
-For example / but very editable (accepts RegEx)
+For example / but very editable (accepts RegEx) semi done!
 
 - !excuse Sorry, Dero burps a lot and forgots manners sometimes
