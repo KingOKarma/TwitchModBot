@@ -1,4 +1,4 @@
-import { CONFIG, STORAGE } from "../utils/globals";
+import { CONFIG, STORAGE, commandList } from "../utils/globals";
 import { ClientCredentialsAuthProvider, StaticAuthProvider } from "twitch-auth";
 import { ApiClient } from "twitch";
 import { ChatClient } from "twitch-chat-client";
@@ -77,9 +77,28 @@ export async function intiChatClient(): Promise<void> {
             return chatClient.say(channel, `${displayName} Please do not say slurs!`).catch(console.error);
         }
 
+        if (cmd === undefined) {
+            return;
+        }
+
+        const cmdIndex = commandList.findIndex((n) => {
+            if (n.aliases === undefined) {
+                return n.name === cmd;
+            }
+            return n.name === cmd || n.aliases.includes(cmd);
+
+
+        });
+
+        if (cmdIndex === -1) {
+            return;
+        }
+
+        const foundcmd = commandList[cmdIndex];
+
         try {
             // eslint-disable-next-line @typescript-eslint/no-var-requires
-            const commandFile = require(`../commands/${cmd}.js`);
+            const commandFile = require(`../commands/${foundcmd.group}/${foundcmd.name}.js`);
             commandFile.run(chatClient, channel, user, message, msg, args);
 
         } catch (err) {
