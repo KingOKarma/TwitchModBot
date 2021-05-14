@@ -2,10 +2,21 @@ import { dump, load } from "js-yaml";
 import { STORAGE } from "./globals";
 import fs from "fs";
 
+export interface ChannelCommand {
+    channelName: string;
+    commands: [CustomCommand];
+}
+
+export interface CustomCommand {
+    commandName: string;
+    response: string;
+}
+
 /**
  * This represents the storage.yml
  * @class Storage
  * @property {string[]} channels
+ * @property {CustomCommand[]} customCommand
 
  */
 export default class Storage {
@@ -13,8 +24,11 @@ export default class Storage {
 
     public channels: string[];
 
+    public customCommand: ChannelCommand[];
+
     private constructor() {
         this.channels = [""];
+        this.customCommand = [{ channelName: "", commands: [{ commandName: "", response: "" }] }];
 
     }
 
