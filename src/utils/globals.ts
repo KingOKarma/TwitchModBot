@@ -9,7 +9,14 @@ export const commandList = [
     { group: "System", name: "join" },
     { aliases: ["leave"], group: "System", name: "part" },
     { aliases: ["pong"], group: "System", name: "ping" },
-    { aliases: ["addcc", "ccadd", "customadd"], group: "CustomCommands", name: "addcustom" }
+    { aliases: ["addcc", "ccadd", "customadd"], group: "CustomCommands", name: "addcustom" },
+    { aliases: ["removecc",
+        "ccremove",
+        "customremove",
+        "deletecustom",
+        "customdelete",
+        "ccdelete",
+        "deletecc"], group: "CustomCommands", name: "removecustom" }
 
 
 ];

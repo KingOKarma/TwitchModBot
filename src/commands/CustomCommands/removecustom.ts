@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { CONFIG, STORAGE } from "../../utils/globals";
-import Storage, { ChannelCommand } from "../../utils/storage";
 import { ChatClient } from "twitch-chat-client/lib";
+import { STORAGE } from "../../utils/globals";
+import Storage from "../../utils/storage";
 import { TwitchPrivateMessage } from "twitch-chat-client/lib/StandardCommands/TwitchPrivateMessage";
 import { checkPerms } from "../../utils/events";
 
@@ -17,12 +17,11 @@ exports.run = async (chatClient: ChatClient,
     if (!perms) return chatClient.say(channel, "Sorry this command can only be used by staff");
 
     const ccName = args.shift();
-    const commandResposne = args.join(" ");
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (ccName === undefined || args[0] === undefined) {
-        return chatClient.say(channel, "Please provide a command name and response. "
-        + "EG: \"!addcustom hello Hi how are you!\" (!addcustom <ccName> <ccResponse>)");
+    if (ccName === undefined) {
+        return chatClient.say(channel, "Please provide a command name from the list to remove from. "
+        + "EG: \"!removecustom hello\" (!addcustom <ccName>)");
     }
 
     const userExists = STORAGE.customCommand.some((command) => command.channelName === user);
@@ -32,25 +31,20 @@ exports.run = async (chatClient: ChatClient,
         const userCommands = STORAGE.customCommand[userIndex];
         const commandExists = userCommands.commands.some((command) => command.commandName === ccName);
 
-        if (commandExists) {
-            return chatClient.say(channel, `@${msg.userInfo.displayName} The command ${ccName} already exists!`);
+        if (!commandExists) {
+            return chatClient.say(channel, `@${msg.userInfo.displayName} The command ${ccName} doesn't exist!`);
         }
+        const commandIndex = userCommands.commands.findIndex((command) => command.commandName === ccName);
+        userCommands.commands.splice(commandIndex, 1);
 
-        userCommands.commands.push({ commandName: ccName, response: commandResposne });
+        // UserCommands.commands.push({ commandName: ccName, response: commandResposne });
     } else {
-        const newCommand: ChannelCommand = {
-            channelName: channel.slice(1),
-            commands: [{
-                commandName: ccName,
-                response: commandResposne
-            }]
-        };
-
-        STORAGE.customCommand.push(newCommand);
+        return chatClient.say(channel, "This channel doesn't have any custom commands!"
+        + " You can add some with !addcustom <ccName> <ccResponse>");
 
     }
 
     Storage.saveConfig();
 
-    return chatClient.say(channel, `I have added! the command ${ccName} to @${channel.slice(1)}!`);
+    return chatClient.say(channel, `I have removed! the command ${ccName} from @${channel.slice(1)}!`);
 };
