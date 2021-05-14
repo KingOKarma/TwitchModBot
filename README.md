@@ -64,7 +64,8 @@ eg:
 
 #### Join Channel
 
-A command or ability to join a channel and store commands for that specific channel
+A command or ability to join a channel and store commands for that specific channel ✅ (also a `!part` So if they don't want the bot they can get rid of it)
+(Make sure to mod the bot so it has perms!)
 
 #### Custom commands/per channel
 
