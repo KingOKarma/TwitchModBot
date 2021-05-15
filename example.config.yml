@@ -4,8 +4,6 @@ accessToken: Your access Token
 botAccessToken: This is the access Token used for the bot account
 # using your chatbot of choice's token (This is to allows the bot to view and type in chat)
 
-botUsername: This is your TWITCH BOT's username (In lower case)
-
 clientID: Your Client ID
 # When getting your client ID
 # Make sure the broadcaster you are getting the client ID for has authorised this link

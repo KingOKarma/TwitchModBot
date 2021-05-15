@@ -7,7 +7,6 @@ import fs from "fs";
  * @class Config
  * @property {string} accessToken
  * @property {string} botAccessToken
- * @property {string} botUsername
  * @property {string} clientID
  * @property {string} clientSecret
  * @property {string} environment
@@ -20,8 +19,6 @@ export default class Config {
     public readonly accessToken: string;
 
     public readonly botAccessToken: string;
-
-    public readonly botUsername: string;
 
     public readonly clientID: string;
 
@@ -37,7 +34,6 @@ export default class Config {
     private constructor() {
         this.accessToken = "";
         this.botAccessToken = "";
-        this.botUsername = "";
         this.clientID = "";
         this.clientSecret = "";
         this.environment = "";

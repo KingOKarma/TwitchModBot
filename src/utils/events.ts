@@ -41,7 +41,6 @@ export async function intiChatClient(): Promise<void> {
     });
 
     chatClient.onMessage(async (channel: string, user: string, message: string, msg: TwitchPrivateMessage) => {
-        if (user === CONFIG.botUsername) return;
 
         if (msg.userInfo.isMod || msg.userInfo.isBroadcaster) {
             userMod = true;
@@ -90,32 +89,32 @@ export async function intiChatClient(): Promise<void> {
         }
         const commandIndex = STORAGE.customCommand.findIndex((command) => command.channelName === channel.slice(1));
         const command = STORAGE.customCommand[commandIndex];
+        if (commandIndex !== -1) {
 
-        const { bannedWords } = command;
-        const isUsingBadWord = bannedWords.some((bannedWord) => {
-            const badword = new RegExp(bannedWord, "g");
-            return badword.exec(message);
-        });
+            const { bannedWords } = command;
+            const isUsingBadWord = bannedWords.some((bannedWord) => {
+                const badword = new RegExp(bannedWord, "g");
+                return badword.exec(message);
+            });
 
-        if (isUsingBadWord && !userMod) {
-            if (foundUser.permitted) return;
+            if (isUsingBadWord && !userMod) {
+                if (foundUser.permitted) return;
 
-            foundUser.warnings += 1;
-            Storage.saveConfig();
-            if (foundUser.warnings > 3) {
-                chatClient.ban(channel, user, "Saying slurs | 3rd and final warning").catch(console.error);
-                foundUser.warnings = 0;
+                foundUser.warnings += 1;
                 Storage.saveConfig();
-                return chatClient.say(channel, `@${displayName} Has been banned for having over 3 warnings in this channel!`);
+                if (foundUser.warnings > 3) {
+                    chatClient.ban(channel, user, "Saying slurs | 3rd and final warning").catch(console.error);
+                    foundUser.warnings = 0;
+                    Storage.saveConfig();
+                    return chatClient.say(channel, `@${displayName} Has been banned for having over 3 warnings in this channel!`);
 
+                }
+
+                chatClient.timeout(channel, user, 120, `Saying slurs | ${foundUser.warnings} total warnings`).catch(console.error);
+                return chatClient.say(channel, `@${displayName} Please do not say slurs!, You now have`
+            + `${foundUser.warnings} warnings!`).catch(console.error);
             }
 
-            chatClient.timeout(channel, user, 120, `Saying slurs | ${foundUser.warnings} total warnings`).catch(console.error);
-            return chatClient.say(channel, `@${displayName} Please do not say slurs!, You now have`
-            + `${foundUser.warnings} warnings!`).catch(console.error);
-        }
-
-        if (commandIndex !== -1) {
             if (!message.startsWith(CONFIG.prefix)) {
                 command.commands.forEach((ccName) => {
                     if (message === ccName.commandName) {
