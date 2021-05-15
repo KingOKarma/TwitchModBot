@@ -3,20 +3,30 @@ import { STORAGE } from "./globals";
 import fs from "fs";
 
 export interface ChannelCommand {
+    bannedWords: string[];
     channelName: string;
     commands: [CustomCommand];
+    counter: Counter;
+    lurkResponse: string;
+    permitted: boolean;
+    warnings: number;
 }
 
 export interface CustomCommand {
-    commandName: string;
-    response: string;
+    commandName?: string;
+    response?: string;
+}
+
+export interface Counter {
+    count: number;
+    counterName: string;
 }
 
 /**
  * This represents the storage.yml
  * @class Storage
  * @property {string[]} channels
- * @property {CustomCommand[]} customCommand
+ * @property {ChannelCommand[]} customCommand
 
  */
 export default class Storage {
@@ -28,7 +38,15 @@ export default class Storage {
 
     private constructor() {
         this.channels = [""];
-        this.customCommand = [{ channelName: "", commands: [{ commandName: "", response: "" }] }];
+        this.customCommand =
+         [{ bannedWords: [""],
+             channelName: "",
+             commands: [{ commandName: "", response: "" }],
+             counter: { count: 0, counterName: "" },
+             lurkResponse: "",
+             permitted: false,
+             warnings: 0 }
+         ];
 
     }
 

@@ -2,6 +2,7 @@ import { CONFIG, STORAGE, commandList } from "../utils/globals";
 import { ClientCredentialsAuthProvider, StaticAuthProvider } from "twitch-auth";
 import { ApiClient } from "twitch";
 import { ChatClient } from "twitch-chat-client";
+import Storage from "./storage";
 import { TwitchPrivateMessage } from "twitch-chat-client/lib/StandardCommands/TwitchPrivateMessage";
 
 // Config consts
@@ -55,49 +56,86 @@ export async function intiChatClient(): Promise<void> {
 
         const { displayName } = msg.userInfo;
 
-        if (message.match(/(https?:\/\/[^\s]+)/g) && !userVIP) {
-            chatClient.say(channel, `@${displayName} Please don't send links! That's only for Mods and VIPs`)
-                .catch(console.error);
-            chatClient.timeout(channel, user, 120, "Sending links").catch(console.error);
-            return;
-        }
-
         const args = message.slice(prefix.length).trim().split(/ +/g);
 
         const cmd = args.shift()?.toLowerCase();
 
-        const bannedWords = ["simp", "incel", "virgin"];
+        if (cmd === undefined) {
+            return;
+        }
+
+        const userIndex = STORAGE.customCommand.findIndex((command) => command.channelName === user);
+        const foundUser = STORAGE.customCommand[userIndex];
+
+        if (userIndex !== -1) {
+            if (message.match(/(https?:\/\/[^\s]+)/g) && !userVIP) {
+                if (foundUser.permitted) return;
+
+                foundUser.warnings += 1;
+                Storage.saveConfig();
+                if (foundUser.warnings > 3) {
+                    chatClient.ban(channel, user, "Sending links | 3rd and final warning").catch(console.error);
+                    foundUser.warnings = 0;
+                    Storage.saveConfig();
+                    return chatClient.say(channel, `@${displayName} Has been banned for having over 3 warnings in this channel!`);
+
+                }
+
+                chatClient.say(channel, `@${displayName} Please don't send links! That's only for Mods and VIPs, You now have`
+                + `${foundUser.warnings} warnings!`)
+                    .catch(console.error);
+                chatClient.timeout(channel, user, 120, `Sending links | ${foundUser.warnings} total warnings`).catch(console.error);
+                return;
+            }
+        }
+        const commandIndex = STORAGE.customCommand.findIndex((command) => command.channelName === channel.slice(1));
+        const command = STORAGE.customCommand[commandIndex];
+
+        const { bannedWords } = command;
         const isUsingBadWord = bannedWords.some((bannedWord) => {
             const badword = new RegExp(bannedWord, "g");
             return badword.exec(message);
         });
 
         if (isUsingBadWord && !userMod) {
-            chatClient.timeout(channel, user, 120, "Saying slurs").catch(console.error);
-            return chatClient.say(channel, `${displayName} Please do not say slurs!`).catch(console.error);
+            if (foundUser.permitted) return;
+
+            foundUser.warnings += 1;
+            Storage.saveConfig();
+            if (foundUser.warnings > 3) {
+                chatClient.ban(channel, user, "Saying slurs | 3rd and final warning").catch(console.error);
+                foundUser.warnings = 0;
+                Storage.saveConfig();
+                return chatClient.say(channel, `@${displayName} Has been banned for having over 3 warnings in this channel!`);
+
+            }
+
+            chatClient.timeout(channel, user, 120, `Saying slurs | ${foundUser.warnings} total warnings`).catch(console.error);
+            return chatClient.say(channel, `@${displayName} Please do not say slurs!, You now have`
+            + `${foundUser.warnings} warnings!`).catch(console.error);
         }
 
-        if (cmd === undefined) {
-            return;
-        }
-        const commandIndex = STORAGE.customCommand.findIndex((command) => command.channelName === channel.slice(1));
-        const command = STORAGE.customCommand[commandIndex];
+        if (commandIndex !== -1) {
+            if (!message.startsWith(CONFIG.prefix)) {
+                command.commands.forEach((ccName) => {
+                    if (message === ccName.commandName) {
+                        if (ccName.response === undefined) {
+                            return;
+                        }
 
-        if (!message.startsWith(CONFIG.prefix)) {
-            command.commands.forEach((ccName) => {
-                if (message === ccName.commandName) {
-                    return chatClient.say(channel, ccName.response);
-                }
-
-            });
-
-        } else {
-            command.commands.forEach((ccName) => {
-                if (cmd === ccName.commandName) {
-                    return chatClient.say(channel, ccName.response);
-                }
-
-            });
+                        return chatClient.say(channel, ccName.response);
+                    }
+                });
+            } else {
+                command.commands.forEach((ccName) => {
+                    if (cmd === ccName.commandName) {
+                        if (ccName.response === undefined) {
+                            return;
+                        }
+                        return chatClient.say(channel, ccName.response);
+                    }
+                });
+            }
         }
 
         const cmdIndex = commandList.findIndex((n) => {

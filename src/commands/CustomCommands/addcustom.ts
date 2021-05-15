@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { CONFIG, STORAGE } from "../../utils/globals";
-import Storage, { ChannelCommand } from "../../utils/storage";
+import Storage, { ChannelCommand, CustomCommand } from "../../utils/storage";
 import { ChatClient } from "twitch-chat-client/lib";
 import { TwitchPrivateMessage } from "twitch-chat-client/lib/StandardCommands/TwitchPrivateMessage";
 import { checkPerms } from "../../utils/events";
@@ -32,6 +32,7 @@ exports.run = async (chatClient: ChatClient,
     if (userExists) {
         const userIndex = STORAGE.customCommand.findIndex((command) => command.channelName === broadcaster);
         const userCommands = STORAGE.customCommand[userIndex];
+
         const commandExists = userCommands.commands.some((command) => command.commandName === ccName);
 
         if (commandExists) {
@@ -41,11 +42,16 @@ exports.run = async (chatClient: ChatClient,
         userCommands.commands.push({ commandName: ccName, response: commandResposne });
     } else {
         const newCommand: ChannelCommand = {
+            bannedWords: ["simp", "incel", "virgin", "nigger", "nigga"],
             channelName: broadcaster,
             commands: [{
                 commandName: ccName,
                 response: commandResposne
-            }]
+            }],
+            counter: { count: 0, counterName: "" },
+            lurkResponse: "",
+            permitted: false,
+            warnings: 0
         };
 
         STORAGE.customCommand.push(newCommand);

@@ -51,16 +51,16 @@ eg:
 #### Permit
 
 - `!permit @thisperson`
-- Can post links without getting timed out for 2 Minutes (anyone permitted, by a Mod or the Streamer)
+- Can post links without getting timed out for 2 Minutes (anyone permitted, by a Mod or the Streamer) ✅
 
 ##### Timeouts (120seconds)
 
 - Anyone who posts a link without being permitted (exclude VIPs + Mods ) ✅
-- Blacklisted words (editable) for now we can just put incel, simp, virgin ✅(Simple version setup)
+- Blacklisted words (editable) for now we can just put incel, simp, virgin ✅
 
 #### Ban
 
-- Anyone that gets timed out by the bot more than 3 times
+- Anyone that gets timed out by the bot more than 3 times ✅
 
 #### Join Channel
 
