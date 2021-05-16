@@ -37,6 +37,7 @@ exports.run = async (chatClient: ChatClient,
         return chatClient.say(channel, `@${targetUser} has been warned they now have ${userCommands.warnings} warnings!`);
     }
     const newCommand: ChannelCommand = {
+        accessToken: "",
         bannedWords: ["simp", "incel", "virgin", "nigger", "nigga"],
         channelName: targetUser,
         commands: [{}],

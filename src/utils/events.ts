@@ -1,23 +1,18 @@
 import { CONFIG, STORAGE, commandList } from "../utils/globals";
-import { ClientCredentialsAuthProvider, StaticAuthProvider } from "twitch-auth";
-import { ApiClient } from "twitch";
-import { ChatClient } from "twitch-chat-client";
-import Storage from "./storage";
+import { ChatClient, Whisper } from "twitch-chat-client";
+import Storage, { ChannelCommand } from "./storage";
+import { StaticAuthProvider } from "twitch-auth";
 import { TwitchPrivateMessage } from "twitch-chat-client/lib/StandardCommands/TwitchPrivateMessage";
 
 // Config consts
 const { clientID } = CONFIG;
-const { clientSecret } = CONFIG;
 const { botAccessToken } = CONFIG;
 // Const { accessToken } = CONFIG;
 const { prefix } = CONFIG;
 
 // Auth Consts
-const authProvider = new ClientCredentialsAuthProvider(clientID, clientSecret);
 const authChatProvider = new StaticAuthProvider(clientID, botAccessToken);
-// Const authUserChatProvider = new StaticAuthProvider(clientID, accessToken);
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const apiClient = new ApiClient({ authProvider });
+
 export let userMod = false;
 export let userVIP = false;
 
@@ -27,7 +22,7 @@ export async function intiChatClient(): Promise<void> {
 
     const allChannels = STORAGE.channels.concat(channels);
 
-    const chatClient = new ChatClient(authChatProvider, { channels: allChannels });
+    const chatClient = new ChatClient(authChatProvider, { botLevel: "known", channels: allChannels });
 
     // Listen to more events...
     await chatClient.connect().then(void console.log("Successfully connected bot client!"));
@@ -38,6 +33,45 @@ export async function intiChatClient(): Promise<void> {
 
     chatClient.onMessageRatelimit(async (channel: string, message: string) => {
         console.log(`Cannot send message in ${channel} because of it was rate limited \n msg: ${message}`);
+    });
+
+    chatClient.onWhisper((user: string, message: string, msg: Whisper) => {
+        if (message.startsWith("!ac")) {
+            const args = message.split(" ");
+            console.log(args);
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            if (args[1] === undefined) {
+                return chatClient.whisper(user, "Please type in an access token with the scope \"user:edit:broadcast\"");
+            }
+
+            const userExists = STORAGE.customCommand.some((command) => command.channelName === msg.userInfo.userName);
+
+            if (userExists) {
+                const userIndex = STORAGE.customCommand.findIndex((command) => command.channelName === msg.userInfo.userName);
+                const userCommands = STORAGE.customCommand[userIndex];
+                // eslint-disable-next-line prefer-destructuring
+                userCommands.accessToken = args[1];
+                Storage.saveConfig();
+
+            } else {
+                const newCommand: ChannelCommand = {
+                    accessToken: args[0],
+                    bannedWords: ["simp", "incel", "virgin", "nigger", "nigga"],
+                    channelName: user,
+                    commands: [{}],
+                    counter: { count: 0, counterName: "" },
+                    lurkResponse: "",
+                    permitted: false,
+                    warnings: 0
+                };
+
+                STORAGE.customCommand.push(newCommand);
+                Storage.saveConfig();
+            }
+            return chatClient.whisper(user, "Thank you! You can now use !game <game name> and !title <title> on your streams now!");
+
+        }
+
     });
 
     chatClient.onMessage(async (channel: string, user: string, message: string, msg: TwitchPrivateMessage) => {
@@ -69,14 +103,16 @@ export async function intiChatClient(): Promise<void> {
         if (userIndex !== -1) {
             if (message.match(/(https?:\/\/[^\s]+)/g) && !userVIP) {
                 if (foundUser.permitted) return;
+                if (foundUser.channelName === CONFIG.twitchUsername) return;
 
                 foundUser.warnings += 1;
                 Storage.saveConfig();
                 if (foundUser.warnings > 3) {
-                    chatClient.ban(channel, user, "Sending links | 3rd and final warning").catch(console.error);
+                    chatClient.ban(channel, user, "Sending links | Over 3 warns with automod").catch(console.error);
                     foundUser.warnings = 0;
                     Storage.saveConfig();
-                    return chatClient.say(channel, `@${displayName} Has been banned for having over 3 warnings in this channel!`);
+                    return chatClient.say(channel, `@${displayName} Has been banned for having`
+                    + " Over 3 warns with automod in this channel!");
 
                 }
 
@@ -99,15 +135,16 @@ export async function intiChatClient(): Promise<void> {
 
             if (isUsingBadWord && !userMod) {
                 if (foundUser.permitted) return;
+                if (foundUser.channelName === CONFIG.twitchUsername) return;
 
                 foundUser.warnings += 1;
                 Storage.saveConfig();
                 if (foundUser.warnings > 3) {
-                    chatClient.ban(channel, user, "Saying slurs | 3rd and final warning").catch(console.error);
+                    chatClient.ban(channel, user, "Saying slurs | Over 3 warns with automod").catch(console.error);
                     foundUser.warnings = 0;
                     Storage.saveConfig();
-                    return chatClient.say(channel, `@${displayName} Has been banned for having over 3 warnings in this channel!`);
-
+                    return chatClient.say(channel, `@${displayName} Has been banned for having`
+                    + " Over 3 warns with automod in this channel!");
                 }
 
                 chatClient.timeout(channel, user, 120, `Saying slurs | ${foundUser.warnings} total warnings`).catch(console.error);

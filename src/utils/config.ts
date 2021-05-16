@@ -8,7 +8,6 @@ import fs from "fs";
  * @property {string} accessToken
  * @property {string} botAccessToken
  * @property {string} clientID
- * @property {string} clientSecret
  * @property {string} environment
  * @property {string} prefix
  * @property {string} twitchUsername
@@ -22,8 +21,6 @@ export default class Config {
 
     public readonly clientID: string;
 
-    public readonly clientSecret: string;
-
     public readonly environment: string;
 
     public readonly prefix: string;
@@ -35,7 +32,6 @@ export default class Config {
         this.accessToken = "";
         this.botAccessToken = "";
         this.clientID = "";
-        this.clientSecret = "";
         this.environment = "";
         this.prefix = "";
         this.twitchUsername = "";

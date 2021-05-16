@@ -41,6 +41,7 @@ exports.run = async (chatClient: ChatClient,
         return chatClient.say(channel, `@${targetUser} has had their warnings cleared!`);
     }
     const newCommand: ChannelCommand = {
+        accessToken: "",
         bannedWords: ["simp", "incel", "virgin", "nigger", "nigga"],
         channelName: targetUser,
         commands: [{}],

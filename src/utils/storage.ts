@@ -3,6 +3,7 @@ import { STORAGE } from "./globals";
 import fs from "fs";
 
 export interface ChannelCommand {
+    accessToken: string;
     bannedWords: string[];
     channelName: string;
     commands: [CustomCommand];
@@ -39,7 +40,8 @@ export default class Storage {
     private constructor() {
         this.channels = [""];
         this.customCommand =
-         [{ bannedWords: [""],
+         [{ accessToken: "",
+             bannedWords: [""],
              channelName: "",
              commands: [{ commandName: "", response: "" }],
              counter: { count: 0, counterName: "" },

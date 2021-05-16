@@ -41,12 +41,12 @@ eg:
 #### Game
 
 - `!game (Change game to this)`
-  changes the game of the stream
+  changes the game of the stream ✅
 
 #### Title
 
 - `!title (changes the title to this)`
-- changes the title of the stream
+- changes the title of the stream ✅
 
 #### Permit
 
@@ -69,6 +69,30 @@ A command or ability to join a channel and store commands for that specific chan
 
 #### Custom commands/per channel
 
-For example / but very editable (accepts RegEx) ✅ done!
+For example / but very editable (accepts RegEx) ✅
 
 - !excuse Sorry, Dero burps a lot and forgots manners sometimes
+
+##### Required User scope:
+
+- `user:edit:broadcast`
+
+Login to your account and go here:
+Redirect link referance:
+https://id.twitch.tv/oauth2/authorize?client_id=[CLIENTID]&redirect_uri=[OneOfTheLinksFromYourRedirectURL]&response_type=token&scope=user:edit:broadcast
+
+Replace `CLIENTID` and `OneOfTheLinksFromYourRedirectURL`
+
+##### Required Bot scopes
+
+- `chat:read`
+- `chat:edit`
+- `channel:moderate`
+- `whispers:read`
+- `whispers:edit`
+
+Login to your bot account and go here:
+Redirect link referance:
+https://id.twitch.tv/oauth2/authorize?client_id=[CLIENTID]&redirect_uri=[OneOfTheLinksFromYourRedirectURL]&response_type=token&scope=chat:read%20chat:edit%20channel:moderate%20whispers:read%20whispers:edit
+
+Replace `CLIENTID` and `OneOfTheLinksFromYourRedirectURL`

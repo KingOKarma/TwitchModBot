@@ -42,6 +42,7 @@ exports.run = async (chatClient: ChatClient,
         userCommands.commands.push({ commandName: ccName, response: commandResposne });
     } else {
         const newCommand: ChannelCommand = {
+            accessToken: "",
             bannedWords: ["simp", "incel", "virgin", "nigger", "nigga"],
             channelName: broadcaster,
             commands: [{
