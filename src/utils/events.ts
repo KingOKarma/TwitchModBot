@@ -56,7 +56,7 @@ export async function intiChatClient(): Promise<void> {
             } else {
                 const newCommand: ChannelCommand = {
                     accessToken: args[0],
-                    bannedWords: ["simp", "incel", "virgin", "nigger", "nigga"],
+                    bannedWords: ["simp", "incel", "virgin"],
                     channelName: user,
                     commands: [{}],
                     counter: { count: 0, counterName: "" },

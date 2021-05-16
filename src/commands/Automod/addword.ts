@@ -16,13 +16,11 @@ exports.run = async (chatClient: ChatClient,
     const perms = checkPerms(msg);
     if (!perms) return chatClient.say(channel, "Sorry this command can only be used by staff");
 
-    const ccName = args.shift();
-    const commandResposne = args.join(" ");
+    const word = args.join(" ");
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (ccName === undefined || args[0] === undefined) {
-        return chatClient.say(channel, "Please provide a command name and response. "
-        + "EG: \"!addcustom hello Hi how are you!\" (!addcustom <ccName> <ccResponse>)");
+    if (args[0] === undefined) {
+        return chatClient.say(channel, "Please provide a word/phrase to add to the automod list!");
     }
 
     const broadcaster = channel.slice(1);
@@ -33,22 +31,19 @@ exports.run = async (chatClient: ChatClient,
         const userIndex = STORAGE.customCommand.findIndex((command) => command.channelName === broadcaster);
         const userCommands = STORAGE.customCommand[userIndex];
 
-        const commandExists = userCommands.commands.some((command) => command.commandName === ccName);
+        const wordExists = userCommands.bannedWords.some((badWord) => badWord === word);
 
-        if (commandExists) {
-            return chatClient.say(channel, `@${msg.userInfo.displayName} The command ${ccName} already exists!`);
+        if (wordExists) {
+            return chatClient.say(channel, `@${msg.userInfo.displayName} The word/phrase is already on the list!`);
         }
 
-        userCommands.commands.push({ commandName: ccName, response: commandResposne });
+        userCommands.bannedWords.push(word);
     } else {
         const newCommand: ChannelCommand = {
             accessToken: "",
-            bannedWords: ["simp", "incel", "virgin"],
+            bannedWords: ["simp", "incel", "virgin", args[0]],
             channelName: broadcaster,
-            commands: [{
-                commandName: ccName,
-                response: commandResposne
-            }],
+            commands: [{}],
             counter: { count: 0, counterName: "" },
             lurkResponse: "",
             permitted: false,
@@ -60,6 +55,14 @@ exports.run = async (chatClient: ChatClient,
     }
 
     Storage.saveConfig();
+    const censored = word.split(" ").map((censWord) => {
+        const half = censWord.trim().substring(censWord.length / 2);
+        const replace = new RegExp(half, "g");
+        const replaceWith = "****";
+        const newword = censWord.replace(replace, replaceWith);
+        return newword;
 
-    return chatClient.say(channel, `I have added! the command ${ccName} to @${channel.slice(1)}!`);
+    });
+
+    return chatClient.say(channel, `I have added the word/phrase "${censored.join(" ")}" to @${channel.slice(1)}!`);
 };

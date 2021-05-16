@@ -28,7 +28,12 @@ export const commandList = [
     { aliases: ["permission", "entitle"], group: "Mod", name: "permit" },
     { aliases: ["punish"], group: "Mod", name: "warn" },
     { aliases: ["modlogs"], group: "Mod", name: "warnings" },
-    { aliases: ["clearlogs", "wipe"], group: "Mod", name: "clearwarns" }
+    { aliases: ["clearlogs", "wipe"], group: "Mod", name: "clearwarns" },
+
+    // Automod CMDs
+    { aliases: ["wordadd"], group: "Automod", name: "addword" },
+    { aliases: ["wordremove", "deleteword", "worddelete"], group: "Automod", name: "removeword" },
+    { aliases: ["wordslist", "wordlist", "listword"], group: "Automod", name: "listwords" }
 
 
 ];

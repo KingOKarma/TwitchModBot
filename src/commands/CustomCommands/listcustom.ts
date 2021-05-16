@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import Storage, { ChannelCommand } from "../../utils/storage";
 import { ChatClient } from "twitch-chat-client/lib";
 import { STORAGE } from "../../utils/globals";
 import { TwitchPrivateMessage } from "twitch-chat-client/lib/StandardCommands/TwitchPrivateMessage";

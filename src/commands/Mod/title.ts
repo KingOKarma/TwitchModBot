@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ApiClient, StaticAuthProvider } from "twitch";
 import { CONFIG, STORAGE } from "../../utils/globals";
-import { ChannelCommand } from "../../utils/storage";
 import { ChatClient } from "twitch-chat-client/lib";
 import { TwitchPrivateMessage } from "twitch-chat-client/lib/StandardCommands/TwitchPrivateMessage";
 import { checkPerms } from "../../utils/events";
