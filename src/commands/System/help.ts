@@ -11,6 +11,6 @@ exports.run = async (chatClient: ChatClient,
     args: string[]): Promise<void> => {
 
     return chatClient.say(channel, "You can head over to"
-    + " https://github.com/KingOKarma/TwitchModBot/tree/main/src/commands#readme for info on all the commands!");
+    + " https://github.com/KingOKarma/TwitchModBot/blob/main/src/commands/README.md for info on all the commands!");
 
 };
