@@ -56,3 +56,10 @@ Redirect link referance:
 https://id.twitch.tv/oauth2/authorize?client_id=[CLIENTID]&redirect_uri=[OneOfTheLinksFromYourRedirectURL]&response_type=token&scope=chat:read%20chat:edit%20channel:moderate%20whispers:read%20whispers:edit
 
 Replace `CLIENTID` and `OneOfTheLinksFromYourRedirectURL`
+
+##### Thank you for using the bot!
+
+This code was made for a fiver commission over at
+https://www.fiverr.com/kingofkarma
+
+~~Make sure to go support my other github projects/commissions!~~
