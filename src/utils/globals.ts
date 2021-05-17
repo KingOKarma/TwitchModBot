@@ -43,7 +43,10 @@ export const commandList = [
     { group: "Counter", name: "count" },
     { aliases: ["editcount"], group: "Counter", name: "countedit" },
     { aliases: ["addcount"], group: "Counter", name: "countadd" },
-    { aliases: ["resetcount"], group: "Counter", name: "countreset" }
+    { aliases: ["resetcount"], group: "Counter", name: "countreset" },
+
+    // Help CMDs
+    { aliases: ["command", "commands"], group: "System", name: "help" }
 
 
 ];
