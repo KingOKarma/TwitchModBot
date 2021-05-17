@@ -33,7 +33,17 @@ export const commandList = [
     // Automod CMDs
     { aliases: ["wordadd"], group: "Automod", name: "addword" },
     { aliases: ["wordremove", "deleteword", "worddelete"], group: "Automod", name: "removeword" },
-    { aliases: ["wordslist", "wordlist", "listword"], group: "Automod", name: "listwords" }
+    { aliases: ["wordslist", "wordlist", "listword"], group: "Automod", name: "listwords" },
+
+    // Lurk CMDs
+    // { aliases: ["editlurk"], group: "Lurk", name: "lurkedit" },
+    // { aliases: ["lurking"], group: "Lurk", name: "lurk" },
+
+    // Counter CMDs
+    { group: "Counter", name: "count" },
+    { aliases: ["editcount"], group: "Counter", name: "countedit" },
+    { aliases: ["addcount"], group: "Counter", name: "countadd" },
+    { aliases: ["resetcount"], group: "Counter", name: "countreset" }
 
 
 ];
