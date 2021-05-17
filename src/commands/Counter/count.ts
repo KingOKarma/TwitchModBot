@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { CONFIG, STORAGE } from "../../utils/globals";
-import Storage, { ChannelCommand, CustomCommand } from "../../utils/storage";
 import { ChatClient } from "twitch-chat-client/lib";
 import { TwitchPrivateMessage } from "twitch-chat-client/lib/StandardCommands/TwitchPrivateMessage";
-import { checkPerms } from "../../utils/events";
 
 exports.run = async (chatClient: ChatClient,
     channel: string,
