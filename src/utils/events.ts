@@ -102,9 +102,10 @@ export async function intiChatClient(): Promise<void> {
             userMod = false;
             userVIP = false;
         }
-        if (msg.userInfo.isVip || userMod) {
+        if (msg.userInfo.isVip || msg.userInfo.isSubscriber || userMod) {
             userVIP = true;
         } else userVIP = false;
+
 
         const { displayName } = msg.userInfo;
 
