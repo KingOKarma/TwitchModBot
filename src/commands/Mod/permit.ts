@@ -71,6 +71,14 @@ exports.run = async (chatClient: ChatClient,
             channelName: targetUser,
             commands: [{}],
             counter: { count: 0, counterName: "" },
+            eventsStrings: {
+                communitySub: "",
+                hosted: "",
+                raided: "",
+                reSub: "",
+                subGifted: "",
+                subed: ""
+            },
             lurkResponse: "",
             permitted: false,
             warnings: 0

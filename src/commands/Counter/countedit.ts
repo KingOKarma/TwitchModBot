@@ -36,10 +36,18 @@ exports.run = async (chatClient: ChatClient,
     } else {
         const newCommand: ChannelCommand = {
             accessToken: "",
-            bannedWords: ["simp", "incel", "virgin", args[0]],
+            bannedWords: ["simp", "incel", "virgin"],
             channelName: broadcaster,
             commands: [{}],
             counter: { count: 0, counterName: word },
+            eventsStrings: {
+                communitySub: "",
+                hosted: "",
+                raided: "",
+                reSub: "",
+                subGifted: "",
+                subed: ""
+            },
             lurkResponse: "",
             permitted: false,
             warnings: 0

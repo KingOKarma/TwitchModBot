@@ -3,6 +3,12 @@ import { ChatClient, Whisper } from "twitch-chat-client";
 import Storage, { ChannelCommand } from "./storage";
 import { StaticAuthProvider } from "twitch-auth";
 import { TwitchPrivateMessage } from "twitch-chat-client/lib/StandardCommands/TwitchPrivateMessage";
+import { onCommunitySub } from "./chatEvents/onCommunitySub";
+import { onHosted } from "./chatEvents/onHosted";
+import { onRaid } from "./chatEvents/onRaid";
+import { onReSub } from "./chatEvents/onReSub";
+import { onSub } from "./chatEvents/onSub";
+import { onSubGift } from "./chatEvents/onSubGift";
 
 // Config consts
 const { clientID } = CONFIG;
@@ -12,6 +18,7 @@ const { prefix } = CONFIG;
 
 // Auth Consts
 const authChatProvider = new StaticAuthProvider(clientID, botAccessToken);
+// Const authUserChatProvider = new StaticAuthProvider(clientID, accessToken);
 
 export let userMod = false;
 export let userVIP = false;
@@ -23,9 +30,13 @@ export async function intiChatClient(): Promise<void> {
     const allChannels = STORAGE.channels.concat(channels);
 
     const chatClient = new ChatClient(authChatProvider, { botLevel: "known", channels: allChannels });
+    // Const userChatClient = new ChatClient(authUserChatProvider, { channels: [CONFIG.twitchUsername] });
+
 
     // Listen to more events...
     await chatClient.connect().then(void console.log("Successfully connected bot client!"));
+    // Await userChatClient.connect().then(void console.log("Successfully connected user client!"));
+
 
     chatClient.onMessageFailed(async (channel: string, reason: string) => {
         console.log(`Cannot send message in ${channel} because of \n\n ${reason}`);
@@ -60,6 +71,14 @@ export async function intiChatClient(): Promise<void> {
                     channelName: user,
                     commands: [{}],
                     counter: { count: 0, counterName: "" },
+                    eventsStrings: {
+                        communitySub: "",
+                        hosted: "",
+                        raided: "",
+                        reSub: "",
+                        subGifted: "",
+                        subed: ""
+                    },
                     lurkResponse: "",
                     permitted: false,
                     warnings: 0
@@ -198,6 +217,47 @@ export async function intiChatClient(): Promise<void> {
         }
 
     });
+
+    chatClient.onCommunitySub(async (
+        channel,
+        user,
+        subInfo,
+        msg
+    ) => onCommunitySub(channel, user, subInfo, msg, chatClient));
+
+    chatClient.onSubGift(async (
+        channel,
+        user,
+        subInfo,
+        msg
+    ) => onSubGift(channel, user, subInfo, msg, chatClient));
+
+    chatClient.onResub(async (
+        channel,
+        user,
+        subInfo,
+        msg
+    ) => onReSub(channel, user, subInfo, msg, chatClient));
+
+    chatClient.onSub(async (
+        channel,
+        user,
+        subInfo,
+        msg
+    ) => onSub(channel, user, subInfo, msg, chatClient));
+
+    chatClient.onHost(async (
+        byChannel,
+        channel,
+        viewers
+    ) => onHosted(channel, byChannel, viewers, chatClient));
+
+    chatClient.onRaid(async (
+        channel,
+        user,
+        raidInfo,
+        msg
+    ) => onRaid(channel, user, raidInfo, msg, chatClient));
 
 }
 

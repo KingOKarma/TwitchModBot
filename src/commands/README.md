@@ -115,6 +115,47 @@ List of All system commands:
       `wipe`.
       `clearlogs`
 
+<br>
+
+- Command `events`
+
+  - Group: Mod
+
+        - Aliases:
+          `event`
+
+    <br>
+
+  **_Extra command info:_**
+  example usage:
+  `!events {eventType} {Event Response}`
+  eg: `!events communitySub Thank you {user} for gifting the community {subsAmount} subs!`
+
+  EventTypes:
+  `communitySub`, `raided`, `reSub`, `subGifted`, `subed`
+
+  You can make the event Response whatever you want eg:
+
+Subs:
+
+```
+Thank you {user} for subbing with {tier} !
+```
+
+Or
+Raids:
+
+````
+Thank you {user} for raiding with a party of {raidCount}  ```
+````
+
+Or
+ReSubs
+
+```
+{user} has reSubbed to {tier} for {months}
+```
+
 ---
 
 #### Automod CMDs
@@ -144,14 +185,6 @@ List of All system commands:
       `listword`,
       `wordlist`,
       `wordslist`
-
----
-
-#### Lurk CMDs
-
-Not sure if implimenting yet!
-~~{ aliases: ["editlurk"], group: "Lurk", name: "lurkedit" },~~
-~~{ aliases: ["lurking"], group: "Lurk", name: "lurk" },~~
 
 ---
 

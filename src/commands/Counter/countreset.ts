@@ -33,6 +33,14 @@ exports.run = async (chatClient: ChatClient,
             channelName: broadcaster,
             commands: [{}],
             counter: { count: 0, counterName: "No count set, you can use {count} as a variable and use countedit to make your counter!" },
+            eventsStrings: {
+                communitySub: "",
+                hosted: "",
+                raided: "",
+                reSub: "",
+                subGifted: "",
+                subed: ""
+            },
             lurkResponse: "",
             permitted: false,
             warnings: 0

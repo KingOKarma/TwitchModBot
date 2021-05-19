@@ -29,15 +29,12 @@ export const commandList = [
     { aliases: ["punish"], group: "Mod", name: "warn" },
     { aliases: ["modlogs"], group: "Mod", name: "warnings" },
     { aliases: ["clearlogs", "wipe"], group: "Mod", name: "clearwarns" },
+    { aliases: ["event"], group: "Mod", name: "events" },
 
     // Automod CMDs
     { aliases: ["wordadd"], group: "Automod", name: "addword" },
     { aliases: ["wordremove", "deleteword", "worddelete"], group: "Automod", name: "removeword" },
     { aliases: ["wordslist", "wordlist", "listword"], group: "Automod", name: "listwords" },
-
-    // Lurk CMDs
-    // { aliases: ["editlurk"], group: "Lurk", name: "lurkedit" },
-    // { aliases: ["lurking"], group: "Lurk", name: "lurk" },
 
     // Counter CMDs
     { group: "Counter", name: "count" },

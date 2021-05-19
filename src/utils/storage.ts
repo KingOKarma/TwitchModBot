@@ -8,6 +8,7 @@ export interface ChannelCommand {
     channelName: string;
     commands: [CustomCommand];
     counter: Counter;
+    eventsStrings: EventStrings;
     lurkResponse: string;
     permitted: boolean;
     warnings: number;
@@ -21,6 +22,15 @@ export interface CustomCommand {
 export interface Counter {
     count: number;
     counterName: string;
+}
+
+export interface EventStrings {
+    communitySub: string;
+    hosted: string;
+    raided: string;
+    reSub: string;
+    subGifted: string;
+    subed: string;
 }
 
 /**
@@ -43,8 +53,26 @@ export default class Storage {
          [{ accessToken: "",
              bannedWords: [""],
              channelName: "",
-             commands: [{ commandName: "", response: "" }],
-             counter: { count: 0, counterName: "" },
+             commands: [
+                 {
+                     commandName: "",
+                     response: ""
+                 }
+             ],
+
+             counter: {
+                 count: 0,
+                 counterName: "" },
+
+             eventsStrings: {
+                 communitySub: "",
+                 hosted: "",
+                 raided: "",
+                 reSub: "",
+                 subGifted: "",
+                 subed: ""
+             },
+
              lurkResponse: "",
              permitted: false,
              warnings: 0 }
