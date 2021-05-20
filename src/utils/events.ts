@@ -171,28 +171,37 @@ export async function intiChatClient(): Promise<void> {
                 return chatClient.say(channel, `@${displayName} Please do not say slurs!, You now have`
             + `${foundUser.warnings} warnings!`).catch(console.error);
             }
+            let ranOnce = false;
 
             if (message.startsWith(CONFIG.prefix)) {
                 command.commands.forEach((ccName) => {
-                    if (cmd === ccName.commandName) {
+                    if (ccName.commandName === undefined) return;
+                    const findCMD = new RegExp(`^${ccName.commandName}$`, "g");
+
+
+                    if (findCMD.exec(cmd)) {
+
                         if (ccName.response === undefined) {
                             return;
                         }
-
                         return chatClient.say(channel, ccName.response);
+
                     }
                 });
             } else {
                 command.commands.forEach((ccName) => {
-                    if (ccName.commandName !== undefined) {
-                        if (ccName.response !== undefined) {
-                            if (message.includes(ccName.commandName)) {
-                                return chatClient.say(channel, ccName.response);
+                    if (!message.startsWith(CONFIG.prefix)) {
+                        if (ccName.commandName !== undefined && ccName.response !== undefined) {
+                            const findCMD = new RegExp(`\\b${ccName.commandName}\\b`, "gi");
+                            if (findCMD.exec(message)) {
+                                if (!ranOnce) {
+                                    ranOnce = true;
+                                    return chatClient.say(channel, ccName.response);
+                                }
                             }
                         }
                     }
                 });
-
             }
         }
 
