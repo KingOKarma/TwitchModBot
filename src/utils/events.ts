@@ -172,9 +172,9 @@ export async function intiChatClient(): Promise<void> {
             + `${foundUser.warnings} warnings!`).catch(console.error);
             }
 
-            if (!message.startsWith(CONFIG.prefix)) {
+            if (message.startsWith(CONFIG.prefix)) {
                 command.commands.forEach((ccName) => {
-                    if (message === ccName.commandName) {
+                    if (cmd === ccName.commandName) {
                         if (ccName.response === undefined) {
                             return;
                         }
@@ -184,13 +184,15 @@ export async function intiChatClient(): Promise<void> {
                 });
             } else {
                 command.commands.forEach((ccName) => {
-                    if (cmd === ccName.commandName) {
-                        if (ccName.response === undefined) {
-                            return;
+                    if (ccName.commandName !== undefined) {
+                        if (ccName.response !== undefined) {
+                            if (message.includes(ccName.commandName)) {
+                                return chatClient.say(channel, ccName.response);
+                            }
                         }
-                        return chatClient.say(channel, ccName.response);
                     }
                 });
+
             }
         }
 
