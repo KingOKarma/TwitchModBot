@@ -36,7 +36,7 @@ export async function onCommunitySub(
 
         }
 
-        return chatClient.say(channel, userCommands.eventsStrings.subed);
+        return chatClient.say(channel, response);
 
     }
     const newCommand: ChannelCommand = {

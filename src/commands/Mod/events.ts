@@ -50,8 +50,10 @@ exports.run = async (chatClient: ChatClient,
                     return chatClient.say(channel, `@${author} With raids you can use the variables {user} and {raidCount}`);
                 }
 
+                args.shift();
                 userCommands.eventsStrings.raided = args.join(" ");
                 Storage.saveConfig();
+                console.log(args);
                 return chatClient.say(channel, `@${author} I have set the raids message to "${userCommands.eventsStrings.raided}"`);
 
             case "subgift":
@@ -59,6 +61,7 @@ exports.run = async (chatClient: ChatClient,
                 if (args[1] === undefined) {
                     return chatClient.say(channel, `@${author} With gifted subs you can use the variables {user} and {gifted} and {tier}`);
                 }
+                args.shift();
                 userCommands.eventsStrings.subGifted = args.join(" ");
                 Storage.saveConfig();
                 return chatClient.say(channel, `@${author} I have set the gifted subs message to "${userCommands.eventsStrings.subGifted}"`);
@@ -69,6 +72,7 @@ exports.run = async (chatClient: ChatClient,
                 if (args[1] === undefined) {
                     return chatClient.say(channel, `@${author} With reSubs you can use the variables {user} and {tier} and months}`);
                 }
+                args.shift();
                 userCommands.eventsStrings.reSub = args.join(" ");
                 Storage.saveConfig();
                 return chatClient.say(channel, `@${author} I have set the resub message to "${userCommands.eventsStrings.reSub}"`);
@@ -79,6 +83,7 @@ exports.run = async (chatClient: ChatClient,
                 if (args[1] === undefined) {
                     return chatClient.say(channel, `@${author} With subs you can use the variables {user} and {tier}`);
                 }
+                args.shift();
                 userCommands.eventsStrings.subed = args.join(" ");
                 Storage.saveConfig();
                 return chatClient.say(channel, `@${author} I have set the subed message to "${userCommands.eventsStrings.subed}"`);

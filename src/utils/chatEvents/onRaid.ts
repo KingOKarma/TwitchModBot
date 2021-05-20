@@ -33,7 +33,7 @@ export async function onRaid(
             response = response.replace(replace, raidInfo.viewerCount.toString());
         }
 
-        return chatClient.say(channel, userCommands.eventsStrings.raided);
+        return chatClient.say(channel, response);
 
     }
     const newCommand: ChannelCommand = {

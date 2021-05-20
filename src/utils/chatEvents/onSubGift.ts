@@ -71,7 +71,7 @@ export async function onSubGift(
                 response = response.replace(replace, subPlan);
             }
 
-            return chatClient.say(channel, userCommands.eventsStrings.subGifted);
+            return chatClient.say(channel, response);
 
         }
         const newCommand: ChannelCommand = {
