@@ -17,7 +17,7 @@ export async function onCommunitySub(
     if (userExists) {
         const userIndex = STORAGE.customCommand.findIndex((command) => command.channelName === broadcaster);
         const userCommands = STORAGE.customCommand[userIndex];
-        let response = userCommands.eventsStrings.subed;
+        let response = userCommands.eventsStrings.communitySub;
 
         if (response === "") {
             return;
