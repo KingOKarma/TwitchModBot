@@ -118,31 +118,57 @@ export async function intiChatClient(): Promise<void> {
         }
 
         const userIndex = STORAGE.customCommand.findIndex((command) => command.channelName === user);
-        const foundUser = STORAGE.customCommand[userIndex];
+        let foundUser = STORAGE.customCommand[userIndex];
 
-        if (userIndex !== -1) {
-            if (message.match(/(https?:\/\/[^\s]+)/g) && !userVIP) {
-                if (foundUser.permitted) return;
-                if (foundUser.channelName === CONFIG.twitchUsername) return;
+        if (userIndex === -1) {
 
-                foundUser.warnings += 1;
-                Storage.saveConfig();
-                if (foundUser.warnings > 3) {
-                    chatClient.ban(channel, user, "Sending links | Over 3 warns with automod").catch(console.error);
-                    foundUser.warnings = 0;
-                    Storage.saveConfig();
-                    return chatClient.say(channel, `@${displayName} Has been banned for having`
-                    + " Over 3 warns with automod in this channel!");
+            const newCommand: ChannelCommand = {
+                accessToken: args[0],
+                bannedWords: ["simp", "incel", "virgin"],
+                channelName: user,
+                commands: [{}],
+                counter: { count: 0, counterName: "" },
+                eventsStrings: {
+                    communitySub: "",
+                    hosted: "",
+                    raided: "",
+                    reSub: "",
+                    subGifted: "",
+                    subed: ""
+                },
+                lurkResponse: "",
+                permitted: false,
+                warnings: 0
+            };
 
-                }
-
-                chatClient.say(channel, `@${displayName} Please don't send links! That's only for Mods and VIPs, You now have`
-                + `${foundUser.warnings} warnings!`)
-                    .catch(console.error);
-                chatClient.timeout(channel, user, 120, `Sending links | ${foundUser.warnings} total warnings`).catch(console.error);
-                return;
-            }
+            STORAGE.customCommand.push(newCommand);
+            Storage.saveConfig();
+            foundUser = newCommand;
         }
+
+        if (message.match(/(https?:\/\/[^\s]+)/g) && !userVIP) {
+            if (foundUser.permitted) return;
+            if (foundUser.channelName === CONFIG.twitchUsername) return;
+
+            foundUser.warnings += 1;
+            Storage.saveConfig();
+            if (foundUser.warnings > 3) {
+                chatClient.ban(channel, user, "Sending links | Over 3 warns with automod").catch(console.error);
+                foundUser.warnings = 0;
+                Storage.saveConfig();
+                return chatClient.say(channel, `@${displayName} Has been banned for having`
+                + " Over 3 warns with automod in this channel!");
+
+            }
+
+            chatClient.say(channel, `@${displayName} Please don't send links! That's only for Mods and VIPs, You now have`
+            + `${foundUser.warnings} warnings!`)
+                .catch(console.error);
+            chatClient.timeout(channel, user, 120, `Sending links | ${foundUser.warnings} total warnings`).catch(console.error);
+            return;
+        }
+
+
         const commandIndex = STORAGE.customCommand.findIndex((command) => command.channelName === channel.slice(1));
         const command = STORAGE.customCommand[commandIndex];
         if (commandIndex !== -1) {
