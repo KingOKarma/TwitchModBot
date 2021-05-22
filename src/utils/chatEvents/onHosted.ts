@@ -8,8 +8,8 @@ export async function onHosted(
     viewers: number | undefined,
     chatClient: ChatClient
 ): Promise<void> {
-    // const hostMsg = `${byChannel} has just hosted with ${viewers}`;
+    // Const hostMsg = `${byChannel} has just hosted with ${viewers}`;
 
-    // return chatClient.say(channel, hostMsg);
+    // Return chatClient.say(channel, hostMsg);
 
 }
