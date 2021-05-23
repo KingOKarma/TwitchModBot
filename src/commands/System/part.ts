@@ -11,15 +11,15 @@ exports.run = async (chatClient: ChatClient,
     msg: TwitchPrivateMessage,
     args: string[]): Promise<void> => {
 
-
+    const author = msg.userInfo.displayName;
     if (user === CONFIG.twitchUsername.toLowerCase()) {
-        return chatClient.say(channel, `@${msg.userInfo.displayName} You cannot part from me as I am bind to your account through a config file!`);
+        return chatClient.say(channel, `@${author} You cannot part from me as I am bind to your account through a config file!`);
     }
 
     const isUserStored = !STORAGE.channels.includes(user);
 
     if (isUserStored) {
-        return chatClient.say(channel, `@${msg.userInfo.displayName} I'm not even in your channel, you can use "${CONFIG.prefix}join" !`);
+        return chatClient.say(channel, `@${author} I'm not even in your channel, you can use "${CONFIG.prefix}join" !`);
     }
 
 
@@ -29,5 +29,5 @@ exports.run = async (chatClient: ChatClient,
     chatClient.part(user);
     Storage.saveConfig();
 
-    return chatClient.say(channel, `I just left the channel @${user}`);
+    return chatClient.say(channel, `@${author} I just left the channel @${user}`);
 };

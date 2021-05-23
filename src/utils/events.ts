@@ -210,7 +210,13 @@ export async function intiChatClient(): Promise<void> {
                         if (ccName.response === undefined) {
                             return;
                         }
-                        return chatClient.say(channel, ccName.response);
+                        let { response } = ccName;
+
+                        if (response.includes("{user}")) {
+                            const replace = new RegExp("{user}", "g");
+                            response = response.replace(replace, msg.userInfo.displayName);
+                        }
+                        return chatClient.say(channel, response);
 
                     }
                 });
@@ -221,8 +227,14 @@ export async function intiChatClient(): Promise<void> {
                             const findCMD = new RegExp(`\\b${ccName.commandName}\\b`, "gi");
                             if (findCMD.exec(message)) {
                                 if (!ranOnce) {
+                                    let { response } = ccName;
+
+                                    if (response.includes("{user}")) {
+                                        const replace = new RegExp("{user}", "g");
+                                        response = response.replace(replace, msg.userInfo.displayName);
+                                    }
                                     ranOnce = true;
-                                    return chatClient.say(channel, ccName.response);
+                                    return chatClient.say(channel, response);
                                 }
                             }
                         }

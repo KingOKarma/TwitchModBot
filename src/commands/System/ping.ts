@@ -9,5 +9,7 @@ exports.run = async (chatClient: ChatClient,
     msg: TwitchPrivateMessage,
     args: string[]): Promise<void> => {
 
-    return chatClient.say(channel, "PONG!");
+    const author = msg.userInfo.displayName;
+
+    return chatClient.say(channel, `@${author} PONG!`);
 };

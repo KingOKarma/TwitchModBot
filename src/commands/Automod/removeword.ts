@@ -13,20 +13,21 @@ exports.run = async (chatClient: ChatClient,
     args: string[]): Promise<void> => {
 
 
+    const author = msg.userInfo.displayName;
     const perms = checkPerms(msg);
-    if (!perms) return chatClient.say(channel, "Sorry this command can only be used by staff");
+    if (!perms) return chatClient.say(channel, `@${author} Sorry this command can only be used by staff`);
 
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (args[0] === undefined) {
-        return chatClient.say(channel, "Please provide a command name from the list to remove from. "
-        + "EG: \"!removecustom hello\" (!addcustom <ccName>)");
+        return chatClient.say(channel, `@${author} Please provide a command name from the list to remove from. "
+        + "EG: \"!removecustom hello\" (!addcustom <ccName>)`);
     }
     const findNumber = new RegExp(/^[0-9]+$/, "g");
     const isNumber = findNumber.exec(args[0]);
 
     if (!isNumber) {
-        return chatClient.say(channel, `Please use ${CONFIG.prefix}listwords to find the number to remove`
+        return chatClient.say(channel, `@${author} Please use ${CONFIG.prefix}listwords to find the number to remove`
         + " the desired word/phrase from the list EG: !removeword 5");
     }
     const broadcaster = channel.slice(1);
@@ -42,7 +43,7 @@ exports.run = async (chatClient: ChatClient,
 
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (badWordIndex === -1) {
-            return chatClient.say(channel, `@${msg.userInfo.displayName} That word/phrase doesn't exist! use ${CONFIG.prefix}listwords to`
+            return chatClient.say(channel, `@${author} That word/phrase doesn't exist! use ${CONFIG.prefix}listwords to`
             + " view what number you need to use!");
         }
         userCommands.bannedWords.splice(wordIndex, 1);
@@ -56,11 +57,11 @@ exports.run = async (chatClient: ChatClient,
             return newword;
 
         });
-        return chatClient.say(channel, `I have removed! the word/phrase "${censored.join(" ")}" from @${channel.slice(1)}!`);
+        return chatClient.say(channel, `@${author} I have removed! the word/phrase "${censored.join(" ")}" from @${channel.slice(1)}!`);
 
     }
-    return chatClient.say(channel, "This channel doesn't have any automod words!"
-        + " You can add some with !addword <Word/Phrase>");
+    return chatClient.say(channel, `@${author} This channel doesn't have any automod words!"
+        + " You can add some with !addword <Word/Phrase>`);
 
 
 };

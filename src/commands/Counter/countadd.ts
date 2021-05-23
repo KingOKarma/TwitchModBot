@@ -12,11 +12,11 @@ exports.run = async (chatClient: ChatClient,
     msg: TwitchPrivateMessage,
     args: string[]): Promise<void> => {
 
-
+    const author = msg.userInfo.displayName;
     const perms = checkPerms(msg);
     if (!perms) {
         if (!msg.userInfo.isVip) {
-            return chatClient.say(channel, "Sorry this command can only be used by staff");
+            return chatClient.say(channel, `@${author} Sorry this command can only be used by staff`);
         }
     }
 
@@ -31,7 +31,7 @@ exports.run = async (chatClient: ChatClient,
         const userCommands = STORAGE.customCommand[userIndex];
 
         if (userCommands.counter.counterName === "") {
-            return chatClient.say(channel, "No count message has been setup! please use countedit with the {count} variable");
+            return chatClient.say(channel, `@${author} No count message has been setup! please use countedit with the {count} variable`);
         }
 
         userCommands.counter.count += 1;
@@ -47,5 +47,5 @@ exports.run = async (chatClient: ChatClient,
         return chatClient.say(channel, response);
     }
 
-    return chatClient.say(channel, "No count message has been setup! please use countedit with the {count} variable");
+    return chatClient.say(channel, `@${author} No count message has been setup! please use countedit with the {count} variable`);
 };

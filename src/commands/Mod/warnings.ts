@@ -13,7 +13,7 @@ exports.run = async (chatClient: ChatClient,
 
     const author = msg.userInfo.displayName;
     const perms = checkPerms(msg);
-    if (!perms) return chatClient.say(channel, "Sorry this command can only be used by staff");
+    if (!perms) return chatClient.say(channel, `@${author} Sorry this command can only be used by staff`);
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (args[0] === undefined) {
         return chatClient.say(channel, `@${author} Please mention a user check warnings for!`);
@@ -30,7 +30,7 @@ exports.run = async (chatClient: ChatClient,
     if (userExists) {
         const userIndex = STORAGE.customCommand.findIndex((command) => command.channelName === targetUser);
         const userCommands = STORAGE.customCommand[userIndex];
-        return chatClient.say(channel, `${targetUser} has ${userCommands.warnings} warnings!`);
+        return chatClient.say(channel, `@${targetUser} has ${userCommands.warnings} warnings!`);
     }
 
     return chatClient.say(channel, `@${targetUser} currently has 0 warnings!`);

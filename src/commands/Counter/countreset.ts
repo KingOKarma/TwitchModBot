@@ -13,8 +13,9 @@ exports.run = async (chatClient: ChatClient,
     args: string[]): Promise<void> => {
 
 
+    const author = msg.userInfo.displayName;
     const perms = checkPerms(msg);
-    if (!perms) return chatClient.say(channel, "Sorry this command can only be used by staff");
+    if (!perms) return chatClient.say(channel, `@${author} Sorry this command can only be used by staff`);
 
     const broadcaster = channel.slice(1);
 
@@ -52,5 +53,5 @@ exports.run = async (chatClient: ChatClient,
 
     Storage.saveConfig();
 
-    return chatClient.say(channel, `I have reset the channel counter for @${channel.slice(1)}!`);
+    return chatClient.say(channel, `@${author} I have reset the channel counter for @${channel.slice(1)}!`);
 };

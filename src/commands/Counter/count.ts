@@ -10,7 +10,7 @@ exports.run = async (chatClient: ChatClient,
     msg: TwitchPrivateMessage,
     args: string[]): Promise<void> => {
 
-
+    const author = msg.userInfo.displayName;
     const broadcaster = channel.slice(1);
 
     const userExists = STORAGE.customCommand.some((command) => command.channelName === broadcaster);
@@ -20,7 +20,7 @@ exports.run = async (chatClient: ChatClient,
         const userCommands = STORAGE.customCommand[userIndex];
 
         if (userCommands.counter.counterName === "") {
-            return chatClient.say(channel, "No count message has been setup! please use countedit with the {count} variable");
+            return chatClient.say(channel, `@${author} No count message has been setup! please use countedit with the {count} variable`);
         }
 
         let response = userCommands.counter.counterName;
@@ -34,6 +34,6 @@ exports.run = async (chatClient: ChatClient,
 
 
     }
-    return chatClient.say(channel, "No count message has been setup! please use countedit with the {count} variable");
+    return chatClient.say(channel, `@${author} No count message has been setup! please use countedit with the {count} variable`);
 
 };

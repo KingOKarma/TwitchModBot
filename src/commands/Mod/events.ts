@@ -13,10 +13,10 @@ exports.run = async (chatClient: ChatClient,
     args: string[]): Promise<void> => {
 
 
-    const perms = checkPerms(msg);
-    if (!perms) return chatClient.say(channel, "Sorry this command can only be used by staff");
-
     const author = msg.userInfo.displayName;
+    const perms = checkPerms(msg);
+    if (!perms) return chatClient.say(channel, `@${author} Sorry this command can only be used by staff`);
+
     const broadcaster = channel.slice(1);
 
     const userExists = STORAGE.customCommand.some((command) => command.channelName === broadcaster);

@@ -14,7 +14,7 @@ exports.run = async (chatClient: ChatClient,
 
     const author = msg.userInfo.displayName;
     const perms = checkPerms(msg);
-    if (!perms) return chatClient.say(channel, "Sorry this command can only be used by staff");
+    if (!perms) return chatClient.say(channel, `@${author} Sorry this command can only be used by staff`);
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (args[0] === undefined) {
         return chatClient.say(channel, `@${author} Please mention a user to clear warnings for!`);

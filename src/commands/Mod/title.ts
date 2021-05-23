@@ -14,7 +14,7 @@ exports.run = async (chatClient: ChatClient,
 
     const author = msg.userInfo.displayName;
     const perms = checkPerms(msg);
-    if (!perms) return chatClient.say(channel, "Sorry this command can only be used by staff");
+    if (!perms) return chatClient.say(channel, `@${author} Sorry this command can only be used by staff`);
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (args[0] === undefined) {
@@ -52,7 +52,7 @@ exports.run = async (chatClient: ChatClient,
         { title: args.join(" ") } ).catch(async (err) => {
         console.log(err);
         succeeded = false;
-        return chatClient.say(channel, `@${author}I do not have authorisation to change your stream title,`
+        return chatClient.say(channel, `@${author} I do not have authorisation to change your stream title,`
         + ` please tell the broadcaster to go to https://id.twitch.tv/oauth2/authorize?client_id=${CONFIG.clientID}`
         + "&redirect_uri=https://redirect.bucketbot.dev&response_type=token&scope=user:edit:broadcast and then "
         + "whisper to me the access token with !ac <token>. EG: !ac a5asdsg36kvidnqw39vf23");

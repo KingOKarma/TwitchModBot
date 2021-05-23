@@ -11,8 +11,9 @@ exports.run = async (chatClient: ChatClient,
     msg: TwitchPrivateMessage,
     args: string[]): Promise<void> => {
 
+    const author = msg.userInfo.displayName;
     const perms = checkPerms(msg);
-    if (!perms) return chatClient.say(channel, "Sorry this command can only be used by staff");
+    if (!perms) return chatClient.say(channel, `@${author} Sorry this command can only be used by staff`);
 
 
     const broadcaster = channel.slice(1);
@@ -20,15 +21,15 @@ exports.run = async (chatClient: ChatClient,
     const channelIndex = STORAGE.customCommand.findIndex((chan) => chan.channelName === broadcaster);
 
     if (channelIndex === -1) {
-        return chatClient.say(channel, "This channel doesn't have any banned words!"
-        + " You can add some with !addword <word/phrase>");
+        return chatClient.say(channel, `@${author} This channel doesn't have any banned words!"
+        + " You can add some with !addword <word/phrase>`);
     }
 
     const foundChannel = STORAGE.customCommand[channelIndex];
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (foundChannel.bannedWords.length < 1) {
-        return chatClient.say(channel, "This channel doesn't have any banned words!"
-        + " You can add some with !addword <word/phrase>");
+        return chatClient.say(channel, `@${author} This channel doesn't have any banned words!"
+        + " You can add some with !addword <word/phrase>`);
     }
 
     const commands = foundChannel.bannedWords.map((command, index) => {
@@ -45,5 +46,5 @@ exports.run = async (chatClient: ChatClient,
     });
 
 
-    return chatClient.say(channel, `List of words: ${commands.join(", ")}`);
+    return chatClient.say(channel, `@${author} List of words: ${commands.join(", ")}`);
 };

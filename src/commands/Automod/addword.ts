@@ -13,14 +13,15 @@ exports.run = async (chatClient: ChatClient,
     args: string[]): Promise<void> => {
 
 
+    const author = msg.userInfo.displayName;
     const perms = checkPerms(msg);
-    if (!perms) return chatClient.say(channel, "Sorry this command can only be used by staff");
+    if (!perms) return chatClient.say(channel, `@${author} Sorry this command can only be used by staff`);
 
     const word = args.join(" ");
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (args[0] === undefined) {
-        return chatClient.say(channel, "Please provide a word/phrase to add to the automod list!");
+        return chatClient.say(channel, `@${author} Please provide a word/phrase to add to the automod list!`);
     }
 
     const broadcaster = channel.slice(1);
@@ -34,7 +35,7 @@ exports.run = async (chatClient: ChatClient,
         const wordExists = userCommands.bannedWords.some((badWord) => badWord === word);
 
         if (wordExists) {
-            return chatClient.say(channel, `@${msg.userInfo.displayName} The word/phrase is already on the list!`);
+            return chatClient.say(channel, `@${author} The word/phrase is already on the list!`);
         }
 
         userCommands.bannedWords.push(word);
@@ -72,5 +73,5 @@ exports.run = async (chatClient: ChatClient,
 
     });
 
-    return chatClient.say(channel, `I have added the word/phrase "${censored.join(" ")}" to @${channel.slice(1)}!`);
+    return chatClient.say(channel, `@${author} I have added the word/phrase "${censored.join(" ")}" to @${channel.slice(1)}!`);
 };

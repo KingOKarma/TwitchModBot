@@ -13,14 +13,15 @@ exports.run = async (chatClient: ChatClient,
     args: string[]): Promise<void> => {
 
 
+    const author = msg.userInfo.displayName;
     const perms = checkPerms(msg);
-    if (!perms) return chatClient.say(channel, "Sorry this command can only be used by staff");
+    if (!perms) return chatClient.say(channel, `@${author} Sorry this command can only be used by staff`);
 
     const word = args.join(" ");
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (args[0] === undefined) {
-        return chatClient.say(channel, "Please provide a message to set for the counter, You can use \"{count}\" "
+        return chatClient.say(channel, `@${author} Please provide a message to set for the counter, You can use "{count}" `
         + "to represent the count as a variable");
     }
 
@@ -58,5 +59,5 @@ exports.run = async (chatClient: ChatClient,
     }
     Storage.saveConfig();
 
-    return chatClient.say(channel, `I have edited the counter response to "${word}" to @${channel.slice(1)}!`);
+    return chatClient.say(channel, `@${author} I have edited the counter response to "${word}" to @${channel.slice(1)}!`);
 };

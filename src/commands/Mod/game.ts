@@ -14,7 +14,7 @@ exports.run = async (chatClient: ChatClient,
 
     const author = msg.userInfo.displayName;
     const perms = checkPerms(msg);
-    if (!perms) return chatClient.say(channel, "Sorry this command can only be used by staff");
+    if (!perms) return chatClient.say(channel, `@${author} Sorry this command can only be used by staff`);
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (args[0] === undefined) {
@@ -88,5 +88,5 @@ exports.run = async (chatClient: ChatClient,
         return;
     }
 
-    return chatClient.say(channel, `I have changed the game to ${gameId.name} for @${channel.slice(1)}!`);
+    return chatClient.say(channel, `@${author} I have changed the game to ${gameId.name} for @${channel.slice(1)}!`);
 };

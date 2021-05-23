@@ -8,8 +8,9 @@ exports.run = async (chatClient: ChatClient,
     message: string,
     msg: TwitchPrivateMessage,
     args: string[]): Promise<void> => {
+    const author = msg.userInfo.displayName;
 
-    return chatClient.say(channel, "You can head over to"
+    return chatClient.say(channel, `@${author} You can head over to`
     + " https://github.com/KingOKarma/TwitchModBot/blob/main/src/commands/README.md for info on all the commands!");
 
 };
