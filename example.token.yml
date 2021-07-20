@@ -1,0 +1,14 @@
+tokenData:
+  accessToken: "YOUR ACCESS TOKEN"
+  expiryTimestamp: null
+  refreshToken: "YOUR REFRESH TOKEN"
+# YOUR TIMESTAMP GIVEN IN THE URL
+# REFRESH TOKEN GIVEN IN THE URL
+
+# GET FROM HERE
+# https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=<CLIENTID>&redirect_uri=<YOUR_REDIRECT>&scope=<YOUR_SCOPES>&state=c3ab8aa609ea11e793ae92361f002671
+
+# AFTER POST TO HERE
+# https://id.twitch.tv/oauth2/token?client_id=<CLIENTID>&client_secret=<CLIENT_SECRET>&code=<CODE_FROM_GET_REQUEST>&grant_type=authorization_code&redirect_uri=<YOUR_REDIRECT>
+
+

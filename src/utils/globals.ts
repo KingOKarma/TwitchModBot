@@ -1,9 +1,12 @@
 import Config from "./config";
 import Storage from "./storage";
+import Token from "./token";
 
 export const CONFIG = Config.getConfig();
 
 export const STORAGE = Storage.getConfig();
+
+export const TOKEN = Token.getConfig();
 
 export const commandList = [
     // System CMDs

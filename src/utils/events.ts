@@ -1,7 +1,8 @@
-import { CONFIG, STORAGE, commandList } from "../utils/globals";
+import { CONFIG, STORAGE, TOKEN, commandList } from "../utils/globals";
 import { ChatClient, Whisper } from "twitch-chat-client";
+import { RefreshableAuthProvider, StaticAuthProvider } from "twitch-auth";
 import Storage, { ChannelCommand } from "./storage";
-import { StaticAuthProvider } from "twitch-auth";
+import Token from "./token";
 import { TwitchPrivateMessage } from "twitch-chat-client/lib/StandardCommands/TwitchPrivateMessage";
 import { onCommunitySub } from "./chatEvents/onCommunitySub";
 import { onHosted } from "./chatEvents/onHosted";
@@ -12,13 +13,28 @@ import { onSubGift } from "./chatEvents/onSubGift";
 
 // Config consts
 const { clientID } = CONFIG;
-const { botAccessToken } = CONFIG;
-// Const { accessToken } = CONFIG;
+const { clientSecret } = CONFIG;
 const { prefix } = CONFIG;
 
+console.log(TOKEN);
 // Auth Consts
-const authChatProvider = new StaticAuthProvider(clientID, botAccessToken);
-// Const authUserChatProvider = new StaticAuthProvider(clientID, accessToken);
+const authProvider = new RefreshableAuthProvider(
+    new StaticAuthProvider(clientID, TOKEN.tokenData.accessToken),
+    {
+        clientSecret,
+        expiry: TOKEN.tokenData.expiryTimestamp === null ? null : new Date(TOKEN.tokenData.expiryTimestamp),
+        onRefresh: async ({ accessToken, refreshToken, expiryDate }): Promise<void> => {
+            const newTokenData = {
+                accessToken,
+                expiryTimestamp: expiryDate === null ? null : expiryDate.getTime(),
+                refreshToken
+            };
+            TOKEN.tokenData = newTokenData;
+            Token.saveConfig();
+        },
+        refreshToken: TOKEN.tokenData.refreshToken
+    }
+);// Const authUserChatProvider = new StaticAuthProvider(clientID, accessToken);
 
 export let userMod = false;
 export let userVIP = false;
@@ -29,7 +45,7 @@ export async function intiChatClient(): Promise<void> {
 
     const allChannels = STORAGE.channels.concat(channels);
 
-    const chatClient = new ChatClient(authChatProvider, { botLevel: "known", channels: allChannels });
+    const chatClient = new ChatClient(authProvider, { botLevel: "known", channels: allChannels });
     // Const userChatClient = new ChatClient(authUserChatProvider, { channels: [CONFIG.twitchUsername] });
 
 
@@ -66,7 +82,7 @@ export async function intiChatClient(): Promise<void> {
 
             } else {
                 const newCommand: ChannelCommand = {
-                    accessToken: args[0],
+                    accessToken: args[1],
                     bannedWords: ["simp", "incel", "virgin"],
                     channelName: user,
                     commands: [{}],

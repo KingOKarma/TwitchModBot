@@ -21,6 +21,8 @@ export default class Config {
 
     public readonly clientID: string;
 
+    public readonly clientSecret: string;
+
     public readonly environment: string;
 
     public readonly prefix: string;
@@ -32,6 +34,7 @@ export default class Config {
         this.accessToken = "";
         this.botAccessToken = "";
         this.clientID = "";
+        this.clientSecret = "";
         this.environment = "";
         this.prefix = "";
         this.twitchUsername = "";

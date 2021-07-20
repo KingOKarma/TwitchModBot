@@ -16,6 +16,9 @@ clientID: Your Client ID
 #Twitch Dev console can be found at:
 #https://dev.twitch.tv/console/
 
+clientSecret: client Secret
+
+
 prefix: Your Prefix here
 
 twitchUsername: Put Your Twitch Username here in full lowercase letters
